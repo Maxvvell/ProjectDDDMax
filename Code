@@ -1,0 +1,80 @@
+<html>
+	<head>
+		<meta charset = "utf-8">
+		<title>Удобный кредитный калькулятор</title>
+		
+	</head>
+
+	<body>
+		<form name = "calc" class = "calc">
+			<label>
+				<input name = "sum" placeholder = "столько" type = "text" class = "needCheck"></abbr>
+				нужная сумма
+			</label>
+			<label>
+				<input name = "term" placeholder = "на столько" type = "text" class = "needCheck">
+				срок в месяцах
+			</label> 
+			<label>
+				<input name = "rate" placeholder = "за столько % в год" type = "text" class = "needCheck">
+				годовая процентная ставка (не ПСК и не переплата)
+			</label> 	
+		 	<label>
+				<abbr title = "Необязательное поле"><input name = "firstPayment" placeholder = "столько внесу" type = "text"></abbr>
+				размер первоначального взноса (добавьте «%», если в процентах)
+			</label>
+			
+			<h3>Тип платежей</h3>
+			<label>
+				<input type = "radio" name = "paymentType" value = "annuitet" checked></input>
+				Все одинаковые (аннуитетные) 
+			</label>
+			<label> 	 
+				<input type = "radio" name = "paymentType" value = "differ" ></input>
+				Уменьшающиеся каждый месяц (дифференцированные) 
+			</label>
+			<input type = "button" value = "Расчёт">
+		</form>
+		<div id = "report"></div>
+		<script>
+		(
+	function (toolboxName) {
+		var toolsObj, x;
+		
+		window[toolboxName] = function (query, all) {
+			return all ? document.querySelectorAll(query)
+				: document.querySelector(query)
+			;
+		};
+		
+ 		toolsObj = {
+ 			
+ 			val: (
+ 				function() {
+ 					function grab(el, onlyText) {
+ 					 return el instanceof Object 
+ 					 		? "value" in el 
+ 								? el.value
+ 								: onlyText
+ 									? el.innerText
+ 									: el.innerHTML
+ 							: void(0)
+ 						; 
+ 					};
+ 					
+					return function(txt, all, onlyText) {
+ 						var x, el = window[toolboxName](txt, all), result;
+					
+						if(all) {
+						 result = [];
+							for(x = 0; x < el.length; x++) {
+								result.push(grab(el[x], onlyText));
+							}
+						} else {
+							result = grab(el, onlyText);
+						}
+ 					
+ 						return result;
+ 					}
+ 				}
+ 			)(),
